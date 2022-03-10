@@ -10,7 +10,7 @@ class Header extends StatelessWidget{
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget> [
           Center(
-            child: Image.asset('assets/time.png', scale: 2.5,),
+            child: Image.asset('assets/timesmall.png', scale: 2.5,),
 
             //child: Text("time.", style: TextStyle(color: Colors.yellow, fontSize: 40),),
           ),
