@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget{
       debugShowCheckedModeBanner: false,
         home: AnimatedSplashScreen(
         duration: 3000,
-        splash: Image.asset('assets/timesmall.png'),
+        splash: Image.asset('assets/time.png'),
         nextScreen: LoginPage(),
         splashTransition: SplashTransition.scaleTransition,
         backgroundColor: Colors.deepPurple,
