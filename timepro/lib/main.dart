@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget{
         home: AnimatedSplashScreen(
         duration: 3000,
         splash: Image.asset('assets/timesmall.png'),
-        nextScreen: LoginPage(),
+        nextScreen: loginPage(),
         splashTransition: SplashTransition.scaleTransition,
         backgroundColor: Colors.deepPurple,
         //pageTransitionType: pageTransitionType.scale,

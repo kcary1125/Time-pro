@@ -1,17 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'home.dart';
+
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
-class LoginPage extends StatefulWidget {
+class loginPage extends StatefulWidget {
 
-  const  LoginPage({Key? key}) : super(key: key);
+  const  loginPage({Key? key}) : super(key: key);
 
   @override
-  LoginPageState createState() => LoginPageState();
+  loginPageState createState() => loginPageState();
 }
 
-class LoginPageState extends State<LoginPage> {
+class loginPageState extends State<loginPage> {
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
@@ -25,7 +26,7 @@ class LoginPageState extends State<LoginPage> {
     if(user != null) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => LoginPage()),
+        MaterialPageRoute(builder: (context) => loginPage()),
       );
     }
   }
@@ -74,6 +75,7 @@ class LoginPageState extends State<LoginPage> {
               filled: true,
               fillColor: Colors.yellow,
               hintText: 'Email',
+                icon: const Icon(Icons.email_outlined, color: Colors.yellow),
               floatingLabelStyle: TextStyle(color: Colors.black),
               //focusedBorder: InputBorder.none,
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(20))
@@ -96,6 +98,7 @@ class LoginPageState extends State<LoginPage> {
               filled: true,
               fillColor: Colors.yellow,
               hintText: 'Password',
+                icon: const Icon(Icons.lock_outline_rounded, color: Colors.yellow),
               floatingLabelStyle: TextStyle(color: Colors.deepPurple),
               //focusedBorder: InputBorder.none,
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(20))
@@ -196,13 +199,14 @@ class LoginPageState extends State<LoginPage> {
               filled: true,
               fillColor: Colors.yellow,
               hintText: 'Your name',
+              icon: const Icon(Icons.person_outline, color: Colors.yellow,),
               floatingLabelStyle: TextStyle(color: Colors.black),
               //focusedBorder: InputBorder.none,
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
             ),
           ),
           Container(
-            height: 0.5,
+            height: 0.1,
             color: Colors.deepPurple,
           ),
           TextField(
@@ -214,6 +218,7 @@ class LoginPageState extends State<LoginPage> {
               filled: true,
               fillColor: Colors.yellow,
               hintText: 'Email',
+              icon: const Icon(Icons.email_outlined, color: Colors.yellow),
               floatingLabelStyle: TextStyle(color: Colors.black),
               //focusedBorder: InputBorder.none,
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
@@ -233,6 +238,7 @@ class LoginPageState extends State<LoginPage> {
               filled: true,
               fillColor: Colors.yellow,
               hintText: 'Create Password',
+                icon: const Icon(Icons.lock_outline_rounded, color: Colors.yellow),
               floatingLabelStyle: TextStyle(color: Colors.black),
               //focusedBorder: InputBorder.none,
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(20))
@@ -262,7 +268,7 @@ class LoginPageState extends State<LoginPage> {
                 if (email.isEmpty || password.isEmpty) {
                   showDialog(context: context, builder: (_) => AlertDialog(
                     title: const Text('Error'),
-                    content: const Text('Please enter your email and password'),
+                    content: const Text('Please enter your name, email and password'),
                     actions: [
                       TextButton(
                         child: const Text('OK'),
@@ -307,7 +313,7 @@ class LoginPageState extends State<LoginPage> {
           ),
           const SizedBox(height: 50),
           Container(
-            height: 0.5,
+            height: 0.1,
             color: Colors.deepPurple,
           ),
           TextField(
@@ -319,28 +325,10 @@ class LoginPageState extends State<LoginPage> {
               filled: true,
               fillColor: Colors.yellow,
               hintText: 'Your Email',
+              icon: const Icon(Icons.email_outlined, color: Colors.yellow),
               floatingLabelStyle: TextStyle(color: Colors.black),
               //focusedBorder: InputBorder.none,
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-            ),
-          ),
-          Container(
-            height: 0.1,
-            color: Colors.deepPurple,
-          ),
-          TextField(
-            controller: passwordController,
-            obscureText: true,
-            autofocus: false,
-            autocorrect: false,
-            enableSuggestions: false,
-            decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.yellow,
-                hintText: 'Create New Password',
-                floatingLabelStyle: TextStyle(color: Colors.black),
-                //focusedBorder: InputBorder.none,
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(20))
             ),
           ),
           const SizedBox(height: 40.0),
@@ -348,23 +336,19 @@ class LoginPageState extends State<LoginPage> {
               width: double.infinity,
             child: OutlinedButton(
               style: OutlinedButton.styleFrom(
-    padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-    side: const BorderSide(width: 2.0, color: Colors.deepPurple),
-    shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),),
+                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                side: const BorderSide(width: 2.0, color: Colors.deepPurple),
+                shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),),
             child: const Text(
               "Reset Password",
               style: TextStyle(
                   color: Colors.yellow,
               fontWeight: FontWeight.bold,
-              fontSize: 18,),
+              fontSize: 18,
+              ),
             ),
             onPressed: () {
-              child: Text(
-                "Password has been Reset"
-              );
-              setState(() {
-                selectedIndex = 0;
-              });
+              resetPass();
             },
           ),
             ),
@@ -403,5 +387,27 @@ class LoginPageState extends State<LoginPage> {
           ],
         )
     );
+  }
+
+  void resetPass() async{
+    try {
+      await _auth.sendPasswordResetEmail(email: emailController.text.trim());
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: Colors.yellow,
+          content: Text('Reset Link has been sent to entered email.'),
+        ),
+      );
+    } on FirebaseAuthException catch (e){
+      if (e.code=='user-not-found'){
+        print('No user found for that email');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.yellow,
+            content: Text('No user found for that email'),
+          ),
+        );
+      }
+    }
   }
 }
