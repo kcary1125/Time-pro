@@ -18,6 +18,7 @@ class _loginPageState extends State<loginPage> {
   final  TextEditingController _passwordController = TextEditingController();
   String email= " ";
   String password=" ";
+  bool isHidden = false;
 
   int _selectedIndex = 0;
 
@@ -305,7 +306,7 @@ class _loginPageState extends State<loginPage> {
       ),
     );
   }
-  Widget forgotPass(){
+  Widget _forgotPass(){
     return Container(
       decoration: BoxDecoration(image: DecorationImage(image: AssetImage('assets/timeb2.jpg'),fit: BoxFit.fill),),
       padding: const EdgeInsets.fromLTRB(60, 0, 60, 0),
@@ -373,6 +374,7 @@ class _loginPageState extends State<loginPage> {
       ),
     );
   }
+  void togglePasswordVisibility() => setState(() => isHidden = !isHidden);
   @override
   Widget build(BuildContext context) {
     final Size screenSize=MediaQuery.of(context).size;
@@ -384,7 +386,7 @@ class _loginPageState extends State<loginPage> {
         children: [
           _renderLogin(),
           _createAccount(),
-          forgotPass(),
+          _forgotPass(),
         ],
       ),
     );
