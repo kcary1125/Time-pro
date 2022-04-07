@@ -118,7 +118,7 @@ class profileScreenState extends State<profileScreen>{
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     onPressed: () {Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) => profileScreen()));},
+                        builder: (BuildContext context) => homeScreen()));},
                     child: Text("CANCEL",
                         style: TextStyle(
                             fontSize: 14,

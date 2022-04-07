@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
 import 'package:timepro/home.dart';
 import 'package:timepro/widgets.dart';
 
@@ -7,6 +8,7 @@ class CreateNewTaskPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+    late String newTask;
     var downwardIcon = Icon(
       Icons.keyboard_arrow_down,
       color: Colors.yellow,
@@ -84,11 +86,17 @@ class CreateNewTaskPage extends StatelessWidget {
                         ],
                       ),
                       SizedBox(height: 20),
-                      MyTextField(
-                        label: 'Description',
-                        icon: downwardIcon,
+                      TextField(
+                        style: TextStyle(color: Colors.yellow),
+                        //label: 'Description',
+                        //icon: downwardIcon,
                         minLines: 3,
                         maxLines: 3,
+                        autofocus: true,
+                        textAlign: TextAlign.center,
+                        onChanged: (newText){
+                          newTask=newText;
+                        },
                       ),
                       SizedBox(height: 20),
                       Container(
@@ -121,6 +129,8 @@ class CreateNewTaskPage extends StatelessWidget {
                     ),
                   ),
                   onPressed: ()async{
+                    Provider.of<TaskData>(context).addTask(newTask);
+                    Navigator.pop(context);
                     Navigator.push(context, MaterialPageRoute(builder: (context) => homeScreen()));
                   },
                 ),
