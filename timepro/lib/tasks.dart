@@ -1,10 +1,38 @@
+import 'dart:math';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:timepro/home.dart';
 import 'package:timepro/widgets.dart';
 
-class CreateNewTaskPage extends StatelessWidget {
+class CreateNewTaskPage extends StatefulWidget {
+  @override
+  CreateNewTaskState createState() => CreateNewTaskState();
+}
+class CreateNewTaskState extends State<CreateNewTaskPage>{
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+
+  addTaskData() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    final User user =  auth.currentUser as User;
+    String uid = user.uid;
+    var time = DateTime.now();
+    await FirebaseFirestore.instance
+        .collection('tasks')
+        .doc(uid)
+        .collection('mytasks')
+        .doc(time.toString())
+        .set({
+      'title': titleController.text,
+      'description': descriptionController.text,
+      'time': time.toString(),
+      'timestamp': time
+    });
+    Fluttertoast.showToast(msg: 'Data Added');
+  }
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -50,9 +78,14 @@ class CreateNewTaskPage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: <Widget>[
                               Expanded(
-                                child: MyTextField(
-                                  label: 'Date',
-                                  icon: downwardIcon,
+                                child: TextField(
+                                  style: TextStyle(color: Colors.deepPurple),
+                                  controller: titleController,
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: Colors.yellow,
+                                    labelText: 'Enter Title',
+                                    border: OutlineInputBorder(),),
                                 ),
                               ),
                               //homeScreen().calendarIcon(),
@@ -68,35 +101,16 @@ class CreateNewTaskPage extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Expanded(
-                              child: MyTextField(
-                                label: 'Start Time',
-                                icon: downwardIcon,
-                              )),
-                          SizedBox(width: 40),
-                          Expanded(
-                            child: MyTextField(
-                              label: 'End Time',
-                              icon: downwardIcon,
-                            ),
-                          ),
-                        ],
-                      ),
                       SizedBox(height: 20),
                       TextField(
-                        style: TextStyle(color: Colors.yellow),
-                        //label: 'Description',
-                        //icon: downwardIcon,
-                        minLines: 3,
-                        maxLines: 3,
-                        autofocus: true,
-                        textAlign: TextAlign.center,
-                        onChanged: (newText){
-                          newTask=newText;
-                        },
+                        style: TextStyle(color: Colors.deepPurple),
+                          controller: descriptionController,
+                          decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.yellow,
+                              labelText: 'Enter Description',
+                              border: OutlineInputBorder()
+                          ),
                       ),
                       SizedBox(height: 20),
                       Container(
@@ -129,9 +143,8 @@ class CreateNewTaskPage extends StatelessWidget {
                     ),
                   ),
                   onPressed: ()async{
-                    Provider.of<TaskData>(context).addTask(newTask);
-                    Navigator.pop(context);
                     Navigator.push(context, MaterialPageRoute(builder: (context) => homeScreen()));
+                    addTaskData();
                   },
                 ),
               ),

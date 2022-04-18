@@ -63,7 +63,7 @@ class timerScreenState extends State<timerScreen>
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        Image.asset('assets/timeb2.jpg', fit:BoxFit.cover,),
+        Image.asset('assets/timeb2.jpg', fit:BoxFit.fill,),
         Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.transparent,
@@ -83,10 +83,19 @@ class timerScreenState extends State<timerScreen>
                         height: 300,
                         child: CircularProgressIndicator(
                           valueColor: AlwaysStoppedAnimation<Color>(Colors.yellow),
-                          backgroundColor: Colors.black54,
+                          backgroundColor: Colors.black,
                           value: progress,
                           strokeWidth: 6,
                         ),
+                      ),
+                      Container(
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                            child: Text("Refocus and Complete your tasks", style: TextStyle(color: Colors.yellow,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 22,
+                            ),),
+                          ),
                       ),
                       GestureDetector(
                         onTap: () {

@@ -1,8 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'home.dart';
 import 'tasks.dart';
 import 'dart:collection';
+import 'dart:convert';
 
 class MyTextField extends StatelessWidget {
   final String label;
@@ -49,34 +53,7 @@ class MyBackButton extends StatelessWidget {
     );
   }
 }
-class User {
-  final String id;
-  final String username;
-  final String email;
-  final String photoUrl;
-  final String displayName;
-  final String bio;
 
-  User({
-    required this.id,
-    required this.username,
-    required this.email,
-    required this.photoUrl,
-    required this.displayName,
-    required this.bio,
-  });
-
-  factory User.fromDocument(DocumentSnapshot doc) {
-    return User(
-      id: doc['id'],
-      email: doc['email'],
-      username: doc['username'],
-      photoUrl: doc['photoUrl'],
-      displayName: doc['displayName'],
-      bio: doc['bio'],
-    );
-  }
-}
 class Task{
   late final String name;
   late bool isDone;

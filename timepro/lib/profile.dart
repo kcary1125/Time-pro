@@ -15,138 +15,144 @@ class profileScreenState extends State<profileScreen>{
   bool showPassword = false;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        resizeToAvoidBottomInset : false,
-      appBar: AppBar(
-        backgroundColor: Colors.deepPurple,
-        elevation: 1,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.yellow,
-          ),
-          onPressed: () {},
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.settings,
-              color: Colors.yellow,
+    return Stack(
+      children: <Widget>[
+        Image.asset('assets/timeb2.jpg', fit:BoxFit.cover,),
+        Scaffold(
+          backgroundColor: Colors.transparent,
+            resizeToAvoidBottomInset : false,
+          appBar: AppBar(
+            backgroundColor: Colors.deepPurple,
+            elevation: 1,
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: Colors.yellow,
+              ),
+              onPressed: () {},
             ),
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => settingsScreen()));
-            },
-          ),
-        ],
-      ),
-      body: Container(
-        padding: EdgeInsets.only(left: 16, top: 25, right: 16),
-        child: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).unfocus();
-          },
-          child: ListView(
-            children: [
-              Text(
-                "Edit Profile",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Center(
-                child: Stack(
-                  children: [
-                    Container(
-                      width: 130,
-                      height: 130,
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              width: 4,
-                              color: Theme.of(context).scaffoldBackgroundColor),
-                          boxShadow: [
-                            BoxShadow(
-                                spreadRadius: 2,
-                                blurRadius: 10,
-                                color: Colors.deepPurple.withOpacity(0.1),
-                                offset: Offset(0, 10))
-                          ],
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: NetworkImage(
-                                "",
-                              ))),
-                    ),
-                    Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              width: 4,
-                              color: Colors.deepPurple,
-                            ),
-                            color: Colors.yellow,
-                          ),
-                          child: Icon(
-                            Icons.edit,
-                            color: Colors.deepPurple,
-                          ),
-                        )),
-                  ],
+            actions: [
+              IconButton(
+                icon: Icon(
+                  Icons.settings,
+                  color: Colors.yellow,
                 ),
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (BuildContext context) => settingsScreen()));
+                },
               ),
-              SizedBox(
-                height: 35,
-              ),
-              buildTextField("Full Name","name" , false),
-              buildTextField("E-mail", "email", false),
-              buildTextField("Password", "********", true),
-              SizedBox(
-                height: 35,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  OutlineButton(
-                    padding: EdgeInsets.symmetric(horizontal: 50),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    onPressed: () {Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) => homeScreen()));},
-                    child: Text("CANCEL",
-                        style: TextStyle(
-                            fontSize: 14,
-                            letterSpacing: 2.2,
-                            color: Colors.black)),
-                  ),
-                  RaisedButton(
-                    onPressed: () {Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) => homeScreen()));},
-                    color: Colors.yellow,
-                    padding: EdgeInsets.symmetric(horizontal: 50),
-                    elevation: 2,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Text(
-                      "SAVE",
-                      style: TextStyle(
-                          fontSize: 14,
-                          letterSpacing: 2.2,
-                          color: Colors.yellow),
-                    ),
-                  )
-                ],
-              )
             ],
           ),
+          body: Container(
+            padding: EdgeInsets.only(left: 16, top: 25, right: 16),
+            child: GestureDetector(
+              onTap: () {
+                FocusScope.of(context).unfocus();
+              },
+              child: ListView(
+                children: [
+                  Text(
+                    "Edit Profile",
+                    style: TextStyle(color: Colors.yellow,fontSize: 25, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Center(
+                    child: Stack(
+                      children: [
+                        Container(
+                          width: 130,
+                          height: 130,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  width: 4,
+                                  color: Theme.of(context).scaffoldBackgroundColor),
+                              boxShadow: [
+                                BoxShadow(
+                                    spreadRadius: 2,
+                                    blurRadius: 10,
+                                    color: Colors.yellow.withOpacity(0.1),
+                                    offset: Offset(0, 10))
+                              ],
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(
+                                    "",
+                                  ))),
+                        ),
+                        Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: Container(
+                              height: 40,
+                              width: 40,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  width: 4,
+                                  color: Colors.deepPurple,
+                                ),
+                                color: Colors.yellow,
+                              ),
+                              child: Icon(
+                                Icons.edit,
+                                color: Colors.yellow,
+                              ),
+                            )),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 35,
+                  ),
+                  buildTextField("Full Name","name" , false),
+                  buildTextField("E-mail", "email", false),
+                  buildTextField("Password", "password", true),
+                  SizedBox(
+                    height: 35,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      OutlineButton(
+                        padding: EdgeInsets.symmetric(horizontal: 50),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        onPressed: () {Navigator.of(context).push(MaterialPageRoute(
+                            builder: (BuildContext context) => homeScreen()));},
+                        child: Text("CANCEL",
+                            style: TextStyle(
+                                fontSize: 14,
+                                letterSpacing: 2.2,
+                                color: Colors.yellow)),
+                      ),
+                      RaisedButton(
+                        onPressed: () {Navigator.of(context).push(MaterialPageRoute(
+                            builder: (BuildContext context) => homeScreen()));},
+                        color: Colors.transparent,
+                        padding: EdgeInsets.symmetric(horizontal: 50),
+                        elevation: 2,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Text(
+                          "SAVE",
+                          style: TextStyle(
+                              fontSize: 14,
+                              letterSpacing: 2.2,
+                              color: Colors.yellow),
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
         ),
-      ),
+      ]
     );
   }
 
@@ -166,7 +172,7 @@ class profileScreenState extends State<profileScreen>{
               },
               icon: Icon(
                 Icons.remove_red_eye,
-                color: Colors.grey,
+                color: Colors.yellow,
               ),
             )
                 : null,
@@ -177,7 +183,7 @@ class profileScreenState extends State<profileScreen>{
             hintStyle: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              color: Colors.black,
+              color: Colors.yellow,
             )),
       ),
     );
