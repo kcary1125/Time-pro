@@ -14,23 +14,24 @@ class CreateNewTaskPage extends StatefulWidget {
 class CreateNewTaskState extends State<CreateNewTaskPage>{
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-
+  List todos = List.empty();
+  @override
+  void initState() {
+    super.initState();
+    todos = ["", ""];
+  }
   addTaskData() async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    final User user =  auth.currentUser as User;
-    String uid = user.uid;
-    var time = DateTime.now();
-    await FirebaseFirestore.instance
-        .collection('tasks')
-        .doc(uid)
-        .collection('mytasks')
-        .doc(time.toString())
-        .set({
-      'title': titleController.text,
-      'description': descriptionController.text,
-      'time': time.toString(),
-      'timestamp': time
-    });
+    DocumentReference documentReference =
+    FirebaseFirestore.instance.collection("tasks").doc('title');
+
+    Map<String, String> todoList = {
+      "title": titleController.text,
+      "description": descriptionController.text
+    };
+
+    documentReference
+        .set(todoList)
+        .whenComplete(() => print("Data stored successfully"));
     Fluttertoast.showToast(msg: 'Data Added');
   }
   @override

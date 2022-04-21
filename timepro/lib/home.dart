@@ -32,44 +32,89 @@ class homeScreenState extends State<homeScreen> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       resizeToAvoidBottomInset : false,
-      body: Stack(
-        children: [
-          //Image.asset('assets/timeb2.jpg', fit:BoxFit.fill,),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AppBar(
-                backgroundColor: Colors.deepPurple,
-                elevation: 0,
-                title: Text("TimePro", style: TextStyle(
-                    fontSize: 30
-                ),),
-                actions: [
-                  IconButton(
-                    icon: Icon(Icons.settings,
-                      color: Colors.yellow,
-                      size: 30,
-                    ), onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context) => settingsScreen())); },
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.announcement_outlined,
-                      color: Colors.yellow,
-                      size: 30,
-                    ), onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context) => motiScreen())); },
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.doorbell_outlined,
-                      color: Colors.yellow,
-                      size: 30,
-                    ), onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context) => addReminderPage())); },
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.calendar_today_outlined,
-                        color: Colors.yellow,
-                        size: 30), onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context) => calScreen())); },
-                  )
-                ],
+      appBar: AppBar(
+        backgroundColor: Colors.deepPurple,
+        elevation: 0,
+        title: Text("TimePro", style: TextStyle(
+            fontSize: 30
+        ),),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.settings,
+              color: Colors.yellow,
+              size: 30,
+            ), onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context) => settingsScreen())); },
+          ),
+          IconButton(
+            icon: Icon(Icons.announcement_outlined,
+              color: Colors.yellow,
+              size: 30,
+            ), onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context) => motiScreen())); },
+          ),
+          IconButton(
+            icon: Icon(Icons.doorbell_outlined,
+              color: Colors.yellow,
+              size: 30,
+            ), onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context) => addReminderPage())); },
+          ),
+          IconButton(
+            icon: Icon(Icons.calendar_today_outlined,
+                color: Colors.yellow,
+                size: 30), onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context) => calScreen())); },
+          )
+        ],
+      ),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance.collection('tasks').snapshots(),
+          builder: (context, snapshot){
+          if (snapshot.hasError){
+            return Text('Something went wrong');
+          } else if (snapshot.hasData || snapshot.data != null){
+            return ListView.builder(
+                shrinkWrap: true,
+                itemCount: snapshot.data?.docs.length,
+                itemBuilder: (BuildContext context, int index){
+                  QueryDocumentSnapshot<Object?>? documentSnapshot =
+                  snapshot.data?.docs[index];
+                  //DocumentSnapshot documentSnapshot = snapshot.data?.docs[index] as DocumentSnapshot<Object?>;
+                  return Dismissible(
+                    key: Key(index.toString()),
+                    child: Card(
+                      elevation: 4,
+                      child: ListTile(
+                        tileColor: Colors.deepPurple,
+                        title: Text((documentSnapshot != null) ? (documentSnapshot["title"]) : ""),
+                        subtitle: Text((documentSnapshot != null)
+                            ? ((documentSnapshot["description"] != null)
+                            ? documentSnapshot["description"]
+                            : "")
+                            : ""),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.delete),
+                          color: Colors.yellow,
+                          onPressed: () {
+                            setState(() {
+                              deleteTask((documentSnapshot != null) ? (documentSnapshot["title"]) : "");
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                    //title: Text(documentSnapshot['title']),
+                    //subtitle: Text(documentSnapshot['description']),
+                  );
+                }
+            );
+          }
+          return const Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(
+                Colors.yellow,
               ),
+            ),
+          );
+          },
+          //Image.asset('assets/timeb2.jpg', fit:BoxFit.fill,),
               /*
                 Expanded(
                   child: SingleChildScrollView(
@@ -106,72 +151,37 @@ class homeScreenState extends State<homeScreen> {
                     ),
 
                  */
-              Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    SizedBox(
-                      height: 110,
-                      child: Stack(
-                        children: [
-                          //Image.asset('assets/timeb2.jpg', fit:BoxFit.cover,),
-                          Positioned(
-                            bottom: 0,
-                            child: Container(
-                              height: 120,
-                              width: MediaQuery.of(context).size.width,
-                              color: Colors.deepPurple,
-                              padding: EdgeInsets.all(20),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                children: [
-                                  Column(
-                                    children: [
-                                      IconButton(
-                                        color: Colors.yellow,
-                                        icon : Icon(Icons.account_box_outlined),
-                                        onPressed: () async{Navigator.push(context, MaterialPageRoute(builder: (context) => profileScreen()));},
-                                      ),
-                                      Text(
-                                        "Profile",
-                                        style: TextStyle(color: Colors.yellow),
-                                      )
-                                    ],
-                                  ),
-                                  Column(
-                                    children: [
-                                      IconButton(
-                                        color: Colors.yellow,
-                                        icon : Icon(Icons.timer_outlined),
-                                        onPressed: () async{Navigator.push(context, MaterialPageRoute(builder: (context) => timerScreen()));},
-                                      ),
-                                      Text(
-                                        "Timer",
-                                        style: TextStyle(color: Colors.yellow),
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            bottom: 20,
-                            left: 0,
-                            right: 0,
-                            child: IconButton(
-                              color: Colors.yellow,
-                              icon: Icon(Icons.add),
-                              onPressed: ()async{openNewTask();},
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ]
-              ),
-            ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+          elevation: 0,
+          iconSize: 35,
+          selectedIconTheme: IconThemeData(color: Colors.yellow, size: 35),
+          selectedItemColor: Colors.yellow,
+          unselectedIconTheme: IconThemeData(
+            color: Colors.yellow,
           ),
-        ],
+          unselectedItemColor: Colors.yellow,
+        backgroundColor: Colors.deepPurple,
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: IconButton(
+              icon: Icon(Icons.person_outline), onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context) => profileScreen())); },
+            ),
+            label: "Profile",
+          ),
+          BottomNavigationBarItem(
+            icon: IconButton(
+              icon: Icon(Icons.add), onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context) => CreateNewTaskPage())); },
+            ),
+            label: "Add Task",
+          ),
+          BottomNavigationBarItem(
+            icon: IconButton(
+              icon: Icon(Icons.timer_outlined), onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context) => timerScreen())); },
+            ),
+            label: "Timer",
+          ),
+        ]
       ),
     );
   }

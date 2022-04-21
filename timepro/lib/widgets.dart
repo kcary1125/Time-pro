@@ -251,7 +251,8 @@ Widget buildList(QuerySnapshot snapshot){
             .delete();
         },
         child: ListTile(
-          title: Text(doc["title"]),
+          title: Text(doc["title"], style: TextStyle(color: Colors.yellow),),
+          tileColor: Colors.deepPurple,
           ),
         );
       }
