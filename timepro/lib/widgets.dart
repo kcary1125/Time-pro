@@ -7,6 +7,7 @@ import 'home.dart';
 import 'tasks.dart';
 import 'dart:collection';
 import 'dart:convert';
+import 'package:google_fonts/google_fonts.dart';
 
 class MyTextField extends StatelessWidget {
   final String label;
@@ -148,4 +149,118 @@ class RoundButton extends StatelessWidget {
       ),
     );
   }
+}
+
+class taskList extends StatefulWidget{
+  @override
+  taskListState createState() => taskListState();
+}
+class taskListState extends State<taskList>{
+  String uid = '';
+  @override
+  void initState() {
+    getuid();
+    super.initState();
+  }
+  getuid() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    final User user = auth.currentUser as User;
+    setState(() {
+      uid = user.uid;
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        child: StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection('tasks')
+              .doc(uid)
+              .collection('mytasks')
+              .snapshots(),
+          builder: (context, AsyncSnapshot snapshot){
+            if (snapshot.connectionState == ConnectionState.waiting){
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              final docs = snapshot.data?.docs;
+              return ListView.builder(
+                itemCount: docs.length,
+                  itemBuilder: (context, index){
+                    var time = (docs[index]['timestamp'] as Timestamp).toDate();
+                    return ListTile(
+                      title: Text(docs["title"]),
+                    );
+                  }
+              );
+            }
+          }
+        ),
+      ),
+    );
+  }
+}
+
+class Description extends StatelessWidget {
+  final String title, description;
+
+  const Description({required Key key, required this.title, required this.description}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Description')),
+      body: Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              margin: EdgeInsets.all(10),
+              child: Text(
+                title,
+                style: GoogleFonts.roboto(
+                    fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.all(10),
+              child: Text(
+                description,
+                style: GoogleFonts.roboto(fontSize: 18),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+Widget buildList(QuerySnapshot snapshot){
+  return ListView.builder(
+      itemCount: snapshot.docs.length,
+      itemBuilder: (context, index){
+        final doc = snapshot.docs[index];
+        return Dismissible(
+            key: Key(doc.id),
+        background: Container(color: Colors.red),
+        onDismissed: (direction) {
+        // delete the doc from the database
+        FirebaseFirestore.instance.collection("tasks")
+            .doc(doc.id)
+            .delete();
+        },
+        child: ListTile(
+          title: Text(doc["title"]),
+          ),
+        );
+      }
+  );
+}
+
+deleteTask(item){
+  DocumentReference documentReference = FirebaseFirestore.instance.collection('tasks').doc(item);
+  documentReference.delete().whenComplete(() {
+    print("$item deleted");
+  });
 }
