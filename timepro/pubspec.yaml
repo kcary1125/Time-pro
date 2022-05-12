@@ -46,6 +46,18 @@ dependencies:
   flutter_ringtone_player: ^3.2.0
   fluttertoast: ^8.0.9
   google_fonts: ^2.3.1
+  calendar_strip: ^1.0.7
+  awesome_notifications: ^0.6.21
+  firebase_messaging: ^11.3.0
+  flutter_local_notifications: ^9.5.0
+  date_format: ^2.0.6
+  sqflite: ^2.0.2+1
+  get: ^4.6.1
+  rxdart: ^0.27.3
+  timezone: ^0.8.0
+  flutter_native_timezone: ^2.0.0
+  date_picker_timeline: ^1.2.3
+  flutter_staggered_animations: ^1.0.0
 
 dev_dependencies:
   flutter_test:
