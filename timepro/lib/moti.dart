@@ -18,8 +18,9 @@ class motiScreenState extends State<motiScreen>{
         decoration: BoxDecoration(image: DecorationImage(image: AssetImage('assets/timeb2.jpg'), fit: BoxFit.fill),),
         padding: const EdgeInsets.fromLTRB(60, 100, 60, 100),
         height: 1000,
-        child: Text("Stay Focused", style: TextStyle(color: Colors.yellow, fontSize: 70, fontWeight: FontWeight.bold,)),
+        child: Text("Stay Focused", style: TextStyle(color: Colors.yellow, fontSize: 50, fontWeight: FontWeight.bold,)),
       ),
     );
   }
 }
+//“Learn as if you will live forever, live like you will die tomorrow.” — Mahatma Gandhi
