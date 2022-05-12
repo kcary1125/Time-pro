@@ -1,11 +1,6 @@
-
-
-//import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:timepro/remind.dart';
-import 'package:timepro/tasks.dart';
 
 class calScreen extends StatefulWidget {
 
@@ -17,10 +12,10 @@ class calScreen extends StatefulWidget {
 
 class calScreenState extends State<calScreen>with TickerProviderStateMixin{
   //late Map<DateTime, List<Event>> selectedEvents;
+  late AnimationController _animationController;
   CalendarFormat format = CalendarFormat.month;
   DateTime selectedDay = DateTime.now();
   DateTime focusedDay = DateTime.now();
-  TextEditingController _eventController = TextEditingController();
 /*
   @override
   void initState(){
@@ -31,14 +26,7 @@ class calScreenState extends State<calScreen>with TickerProviderStateMixin{
   List<Event> _getEventsfromDay(DateTime date) {
     return selectedEvents[date] ?? [];
   }
-
- */
-
-  @override
-  void dispose() {
-    _eventController.dispose();
-    super.dispose();
-  }
+*/
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +47,6 @@ class calScreenState extends State<calScreen>with TickerProviderStateMixin{
         return isSameDay(selectedDay, date);
     },
         //eventLoader: _getEventsfromDay,
-
         calendarStyle: CalendarStyle(
           isTodayHighlighted: true,
           selectedDecoration: BoxDecoration(
@@ -70,7 +57,7 @@ class calScreenState extends State<calScreen>with TickerProviderStateMixin{
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           backgroundColor: Colors.deepPurple,
-        onPressed: () => { Navigator.push(context, MaterialPageRoute(builder: (context) => CreateNewTaskPage()))},
+        onPressed: () => { Navigator.push(context, MaterialPageRoute(builder: (context) => addReminderPage()))},
         ),
     );
   }

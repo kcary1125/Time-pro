@@ -1,9 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-
-import 'login.dart';
 
 
 class settingsScreen extends StatefulWidget {
@@ -15,7 +12,6 @@ class settingsScreenState extends State<settingsScreen>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.deepPurple,
         appBar: AppBar(
         backgroundColor: Colors.deepPurple,
     elevation: 1,
@@ -24,17 +20,7 @@ class settingsScreenState extends State<settingsScreen>{
         decoration: BoxDecoration(image: DecorationImage(image: AssetImage('assets/timeb2.jpg'), fit: BoxFit.fill),),
         padding: const EdgeInsets.fromLTRB(60, 100, 60, 100),
         height: 1000,
-        child: IconButton(
-          icon: Icon(
-              Icons.logout_outlined,
-              color: Colors.yellow
-          ),
-          onPressed: (){
-            Fluttertoast.showToast(msg: 'User Logged Out');
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (BuildContext context) => loginPage()));
-          },
-        )
+        child: Text("Add some settings in future", style: TextStyle(color: Colors.yellow, fontSize: 70, fontWeight: FontWeight.bold,)),
       ),
     );
   }

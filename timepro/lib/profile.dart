@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:timepro/settings.dart';
 
 import 'home.dart';
-import 'login.dart';
 
 
 class profileScreen extends StatefulWidget {
@@ -30,9 +29,7 @@ class profileScreenState extends State<profileScreen>{
                 Icons.arrow_back,
                 color: Colors.yellow,
               ),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => homeScreen()));
-              },
+              onPressed: () {},
             ),
             actions: [
               IconButton(
@@ -45,16 +42,6 @@ class profileScreenState extends State<profileScreen>{
                       builder: (BuildContext context) => settingsScreen()));
                 },
               ),
-              IconButton(
-                icon: Icon(
-                  Icons.logout_outlined,
-                      color: Colors.yellow
-                ),
-                onPressed: (){
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (BuildContext context) => loginPage()));
-                },
-              )
             ],
           ),
           body: Container(
@@ -121,8 +108,8 @@ class profileScreenState extends State<profileScreen>{
                   SizedBox(
                     height: 35,
                   ),
-                  buildTextField("Name","name" , true),
-                  buildTextField("E-mail", "email", true),
+                  buildTextField("Full Name","name" , false),
+                  buildTextField("E-mail", "email", false),
                   buildTextField("Password", "password", true),
                   SizedBox(
                     height: 35,
